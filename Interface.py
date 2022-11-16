@@ -73,7 +73,7 @@ class Interface:
                 return self.build_login_page()
 
     def run_interface(self):
-        self.app.run_server()
+        self.app.run_server(debug=True)
 
     def build_login_page(self):
         return html.Div([
