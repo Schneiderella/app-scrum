@@ -41,8 +41,8 @@ class Interface:
             for i in li:
                 if i['nome'] == uname and i['pword'] == passw:
                     self.validated = True
-                    self.Usuario = Usuario(uname)
-                    self.Usuario.set_permissao(i['permissao'])
+                    self.usuario = Usuario(uname)
+                    self.usuario.set_permissao(i['permissao'])
 
             if uname == '' or uname == None or passw == '' or passw == None:
                 return html.Div(children='', style={'padding-left': '550px', 'padding-top': '10px'})
@@ -96,31 +96,51 @@ class Interface:
             ])
 
     def build_interface(self):
+        child = [html.Li(
+            id="banner-text",
+            className='nav-item',
+            children=[
+                html.H5("Dashboard Censo"),
+                html.H6("Projeto Engenharia de Software"),
+            ],
+        ), html.Li(id="banner-text",
+                   className='nav-item',
+                   children=[html.H5("Olá " + self.usuario.nome + '! '),
+                             html.H6("Nível de permissao: " + self.usuario.permissao)],
+                   )]
+
+        if self.usuario.permissao == '1':
+            child.append(html.A('planilha',
+                                id='banner-button',
+                                className='nav-item button',
+                                href='https://docs.google.com/spreadsheets/d/1TXji11jIZMtBK_Li41LNf-oij8PWuWSiGMxuW72njig/edit#gid=0',
+                                style={'font-size': '10px', 'border-style': 'solid'}
+                                ))
+
         ch = [html.Div(
             id="banner",
             className="banner",
-            children=[
-                html.Li(
-                    id="banner-text",
-                    className='nav-item',
-                    children=[
-                        html.H5("Dashboard Censo"),
-                        html.H6("Projeto Engenharia de Software"),
-                    ],
-                ),html.Li(id="banner-text",
-                    className='nav-item',
-                    children=[html.H5("Olá "+self.Usuario.nome+'! '),
-                        html.H6("Nível de permissao: "+self.Usuario.permissao)],
-                ),
-                html.A('planilha',
-                    id='banner-button',
-                    className='nav-item button',
-                    href='https://docs.google.com/spreadsheets/d/1TXji11jIZMtBK_Li41LNf-oij8PWuWSiGMxuW72njig/edit#gid=0',
-                    style={'font-size': '10px','border-style': 'solid'}
-                ),
-            ],
+            children=child,
         )]
+
+        if self.usuario.permissao in ['1', '2']:
+            ch.append(html.Div(id="banner",
+                className="banner",
+                children=[
+                    html.Li(id='banner-text', className='nav-item',
+                        children=dcc.Dropdown(['10 anos', '20 anos', '30 anos'], 'NYC',
+                        id='demo-dropdown')),
+                    html.Li(id='banner-text', className='nav-item',
+                        children=dcc.Dropdown(['2010', '2011', '2012'], 'NYC', id='demo-dropdown')),
+                    html.Li(id='banner-text', className='nav-item',
+                        children=dcc.Dropdown(['Todos', 'Feminino', 'Masculino'], 'NYC',
+                        id='demo-dropdown')),
+                    html.Li(id='banner-text', className='nav-item',
+                        children=dcc.Dropdown(['RS', 'SP', 'RJ'], 'NYC', id='demo-dropdown'))
+                ])
+            )
         # ch = [self.build_banner()]
+
         for i in self.indicadores:
             ch.append(html.Br())
             ch.append(i)
