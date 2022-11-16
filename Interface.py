@@ -48,7 +48,7 @@ class Interface:
                 return html.Div(children='', style={'padding-left': '550px', 'padding-top': '10px'})
 
             elif self.validated:
-                return html.Div(dcc.Link('Access Granted!', href='/next_page',
+                return html.Div(dcc.Link('Acesso Permitido!', href='/next_page',
                                         style={'color': '#183d22', 'font-family': 'serif', 'font-weight': 'bold',
                                                 "text-decoration": "none", 'font-size': '20px'}),
                                         style={'padding-left': '605px', 'padding-top': '40px'})
