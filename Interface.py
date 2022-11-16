@@ -78,7 +78,7 @@ class Interface:
     def build_login_page(self):
         return html.Div([
             html.Div(
-                dcc.Input(id="user", type="text", placeholder="Usuario",className="inputbox1",
+                dcc.Input(id="user", type="text", placeholder="Usuário",className="inputbox1",
                     style={'margin-left':'35%','width':'450px','height':'45px','padding':'10px','margin-top':'60px',
                     'font-size':'16px','border-width':'3px','border-color':'#a0a3a2'
                 }),
