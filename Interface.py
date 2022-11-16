@@ -78,19 +78,19 @@ class Interface:
     def build_login_page(self):
         return html.Div([
             html.Div(
-                dcc.Input(id="user", type="text", placeholder="Enter Username",className="inputbox1",
+                dcc.Input(id="user", type="text", placeholder="Usuario",className="inputbox1",
                     style={'margin-left':'35%','width':'450px','height':'45px','padding':'10px','margin-top':'60px',
                     'font-size':'16px','border-width':'3px','border-color':'#a0a3a2'
                 }),
             ),
             html.Div(
-                dcc.Input(id="passw", type="text", placeholder="Enter Password",className="inputbox2",
+                dcc.Input(id="passw", type="text", placeholder="Senha",className="inputbox2",
                     style={'margin-left':'35%','width':'450px','height':'45px','padding':'10px','margin-top':'10px',
                     'font-size':'16px','border-width':'3px','border-color':'#a0a3a2',
                 }),
             ),
             html.Div(
-                html.Button('Verify', id='verify', n_clicks=0, style={'border-width':'3px','font-size':'14px'}),
+                html.Button('Entrar', id='verify', n_clicks=0, style={'border-width':'3px','font-size':'14px'}),
                     style={'margin-left':'45%','padding-top':'30px'}),
                 html.Div(id='output1')
             ])
