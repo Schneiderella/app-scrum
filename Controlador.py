@@ -41,13 +41,17 @@ class Controlador:
                     titlefont_size=16,
                     tickfont_size=14,
                     showgrid=False,
-                ),xaxis=dict(
+                ),
+                xaxis=dict(
                     title='Ano',
                     titlefont_size=16,
                     tickfont_size=14,
-                ),plot_bgcolor='#282d3b',
+                ),
+                plot_bgcolor='#282d3b',
                 paper_bgcolor='#282d3b',
-                font= {'color': '#FFFFFF'}
+                font= {'color': '#FFFFFF'},
+                # width = 1200,
+                # height = 500
             )
 
             graf = dcc.Graph(figure=fig)

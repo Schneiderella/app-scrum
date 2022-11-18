@@ -18,9 +18,8 @@ class Interface:
     def __init__(self):
     # assume you have a "long-form" data frame
     # see https://plotly.com/python/px-arguments/ for more options
-        self.login_page = ''
-        self.interface = ''
         self.indicadores = []
+        self.validated = False
 
         external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css','https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css']
         self.app = dash.Dash(__name__, suppress_callback_exceptions=True,external_stylesheets=external_stylesheets)
