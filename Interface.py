@@ -10,6 +10,7 @@ from dash_auth import BasicAuth
 import dash_enterprise_auth as auth
 
 from AcessarUsuario import AcessarUsuario
+from Controlador import Controlador
 from Usuario import Usuario
 
 
@@ -19,6 +20,9 @@ class Interface:
     # assume you have a "long-form" data frame
     # see https://plotly.com/python/px-arguments/ for more options
         self.indicadores = []
+
+        self.controlador = Controlador()
+
         self.validated = False
 
         external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css','https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css']
@@ -70,6 +74,9 @@ class Interface:
                                         style={'padding-left': '605px', 'padding-top': '40px'})
             else:
                 return self.build_login_page()
+
+        self.build_indicadores()
+        self.run_interface()
 
     def run_interface(self):
         self.app.run_server(debug=True)
@@ -145,10 +152,98 @@ class Interface:
             ch.append(i)
         return html.Div(ch)
 
-    def build_indicadores(self,indicadores):
-        self.indicadores = indicadores
+    def build_indicadores(self):
+        lista = [self.gerar_barra()]
+
+        ch = html.Div(
+            id="banner",
+            className="banner",
+            children=[
+                html.Li(
+                    className='nav-item',
+                    children=[
+                        self.gerar_pizza()
+                    ],
+                ),
+                html.Li(id='espaco-nav',
+                        className='nav-item',
+                        style={"width": "100px"}
+                        ),
+                html.Li(
+                    className='nav-item',
+                    children=[
+                        self.gerar_mapa()
+                    ],
+                ),
+            ],
+        )
+
+        lista.append(ch)
 
 
+    def gerar_mapa(self):
 
+        df = self.controlador.dados_mapa()
+        counties = self.controlador.dados_geoson()
 
+        fig = px.choropleth_mapbox(df, geojson=counties, locations='sigla_uf', color='qtd',
+                                   color_continuous_scale="Viridis",
+                                   range_color=(0, 25000000),
+                                   mapbox_style="carto-positron",
+                                   zoom=2, center={"lat": -12.319094, "lon": -50.754922},
+                                   opacity=0.5,
+                                   labels={'qtd': 'População'}
+                                   )
+        fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
+            plot_bgcolor='#282d3b',
+            paper_bgcolor='#282d3b',
+            font={'color': '#FFFFFF'},
+            width=600,
+            height=500,
+        )
 
+        graf = dcc.Graph(figure=fig)
+        self.indicadores.append(graf)
+
+    def gerar_pizza(self):
+        df = self.controlador.dados_pizza()
+
+        fig = px.pie(df, values='qtd', names='idade',
+                     title='População Brasileira por Grupo de Idade')
+        fig.update_layout(plot_bgcolor='#282d3b',
+                          paper_bgcolor='#282d3b',
+                          font={'color': '#FFFFFF'},
+                          width=600,
+                          height=500,
+                          )
+        graf = dcc.Graph(figure=fig)
+        self.indicadores.append(graf)
+
+    def gerar_barra(self):
+
+        df = self.controlador.dados_barra()
+
+        fig = px.histogram(df, x="ano", y="qtd", color="sex", barmode="group", histfunc='sum', template="seaborn")
+        fig.update_layout(
+            title='População Brasileira Anual',
+            xaxis_tickfont_size=14,
+            yaxis=dict(
+                title='População',
+                titlefont_size=16,
+                tickfont_size=14,
+                showgrid=False,
+            ),
+            xaxis=dict(
+                title='Ano',
+                titlefont_size=16,
+                tickfont_size=14,
+            ),
+            plot_bgcolor='#282d3b',
+            paper_bgcolor='#282d3b',
+            font={'color': '#FFFFFF'},
+            # width = 1200,
+            # height = 500
+        )
+
+        graf = dcc.Graph(figure=fig)
+        self.indicadores.append(graf)
