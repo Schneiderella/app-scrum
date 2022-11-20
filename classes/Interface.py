@@ -143,7 +143,7 @@ class Interface:
             )
         # ch = [self.build_banner()]
 
-        for i in self.indicadores:
+        for i in self.build_indicadores():
             ch.append(html.Br())
             ch.append(i)
         return html.Div(ch)
@@ -176,6 +176,8 @@ class Interface:
 
         lista.append(ch)
 
+        return lista
+
 
     def gerar_mapa(self):
 
@@ -199,7 +201,7 @@ class Interface:
         )
 
         graf = dcc.Graph(figure=fig)
-        self.indicadores.append(graf)
+        return graf
 
     def gerar_pizza(self):
         df = self.controlador.dados_pizza()
@@ -213,7 +215,7 @@ class Interface:
                           height=500,
                           )
         graf = dcc.Graph(figure=fig)
-        self.indicadores.append(graf)
+        return graf
 
     def gerar_barra(self):
 
@@ -242,4 +244,4 @@ class Interface:
         )
 
         graf = dcc.Graph(figure=fig)
-        self.indicadores.append(graf)
+        return graf
