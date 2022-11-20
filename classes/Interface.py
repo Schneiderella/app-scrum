@@ -136,7 +136,7 @@ class Interface:
                 }),
             ),
             html.Div(
-                html.Button('Entrar', id='verify', n_clicks=0, style={'border-width':'1px','font-size':'10px'}),
+                html.Button('Entrar', id='verify', n_clicks=0, style={'border-width':'1px','font-size':'10px','color':'white'}),
                     style={'margin-left':'35%','padding-top':'30px'}),
                 html.Div(id='output1')
             ])
