@@ -19,6 +19,8 @@ class Controlador:
 
         del_index = []
         i = 0
+
+        # Altera valor de alguns campos para ficar com os períodos certinhos de 10 anos e não quebrados
         while i < len(data_2):
             # print(self.data[i]["grupo_idade"])
 
@@ -31,11 +33,14 @@ class Controlador:
             elif data_2[i]["grupo_idade"] in ('20 a 24 anos', '25 a 29 anos'):
                 data_2[i]["grupo_idade"] = '20 a 29 anos'
 
+
             if data_2[i]["grupo_idade"] in ("60 a 64 anos", "65 anos ou mais", "5 a 13 anos", "14 a 15 anos", "16 a 17 anos"):
+                # Adiciona a lista de indices a serem deletados
                 del_index.append(i)
 
             i += 1
 
+        # deleta os valores dos indices a serem deletados
         cont = 0
         for i in del_index:
             # print(i,cont)
@@ -44,6 +49,7 @@ class Controlador:
 
         self.data = data_2
 
+    # retorna os dados tratados a serem utilizados no graf de barras
     def dados_barra(self, sexo=['Homens','Mulheres'], idade='Total', ano='2019', uf='Total'):
 
         condicao = lambda x: x['sexo'] in ['Homens','Mulheres'] and x["grupo_idade"] == idade
@@ -59,6 +65,7 @@ class Controlador:
 
         return df
 
+    # retorna os dados tratados a serem utilizados no graf de pizza
     def dados_pizza(self, sexo='Total', idade='Total', ano='2019', uf='Total'):
 
         condicao = lambda x: x['sexo'] == sexo and x["ano"] == ano and x["grupo_idade"] != 'Total'
