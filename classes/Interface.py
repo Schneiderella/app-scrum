@@ -1,17 +1,13 @@
 # Run this app with `python app.py` and
 # visit http://127.0.0.1:8050/ in your web browser.
 
-from dash import Dash, html, dcc, dash
+from dash import html, dcc, dash
 from dash.dependencies import Output,Input,State
 import plotly.express as px
-import plotly.graph_objects as go
-import pandas as pd
-from dash_auth import BasicAuth
-import dash_enterprise_auth as auth
 
-from AcessarUsuario import AcessarUsuario
-from Controlador import Controlador
-from Usuario import Usuario
+from classes.AcessarUsuario import AcessarUsuario
+from classes.Controlador import Controlador
+from classes.Usuario import Usuario
 
 
 class Interface:
@@ -190,7 +186,7 @@ class Interface:
                                    color_continuous_scale="Viridis",
                                    range_color=(0, 25000000),
                                    mapbox_style="carto-positron",
-                                   zoom=2, center={"lat": -12.319094, "lon": -50.754922},
+                                   zoom=2.8, center={"lat": -14.348643, "lon": -54.089816},
                                    opacity=0.5,
                                    labels={'qtd': 'População'}
                                    )
