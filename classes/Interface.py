@@ -16,7 +16,7 @@ class Interface:
     # assume you have a "long-form" data frame
     # see https://plotly.com/python/px-arguments/ for more options
         self.indicadores = []
-
+        self.filtro = {'sex': 'Total','idade': 'Total','ano': '2019','uf': 'Total',}
         self.controlador = Controlador()
 
         self.validated = False
@@ -70,6 +70,50 @@ class Interface:
                                         style={'padding-left': '605px', 'padding-top': '40px'})
             else:
                 return self.build_login_page()
+
+        @self.app.callback(
+            Output('filtro_ano', 'children'),
+            Input('dropdown_ano', 'value')
+        )
+        def update_figure_ano(ano):
+            self.filtro['ano'] = ano
+            # print(self.filtro)
+            # return ano
+
+        @self.app.callback(
+            Output('filtro_sexo', 'children'),
+            Input('dropdown_sexo', 'value')
+        )
+        def update_figure_sexo(sexo):
+            self.filtro['sex'] = sexo
+            # print(self.filtro)
+            # return sexo
+
+        @self.app.callback(
+            Output('filtro_idade', 'children'),
+            Input('dropdown_idade', 'value')
+        )
+        def update_figure_idade(idade):
+            self.filtro['idade'] = idade
+            # print(self.filtro)
+            # return idade
+
+        @self.app.callback(
+            Output('filtro_uf', 'children'),
+            Input('dropdown_uf', 'value')
+        )
+        def update_figure_uf(uf):
+            self.filtro['uf'] = uf
+            # print(self.filtro)
+            # return uf
+
+        @self.app.callback(
+            Output('indicadores', 'children'),
+            Input('Filtrar', 'n_clicks')
+        )
+        def update_figure_uf(uf):
+            # print(self.filtro)
+            return self.build_indicadores()
 
         self.build_indicadores()
         self.run_interface()
@@ -126,30 +170,50 @@ class Interface:
         )]
 
         if self.usuario.permissao in ['1', '2']:
-            ch.append(html.Div(id="banner",
-                className="banner",
-                children=[
-                    html.Li(id='banner-text', className='nav-item',
-                        children=dcc.Dropdown(['10 anos', '20 anos', '30 anos'], 'NYC',
-                        id='demo-dropdown')),
-                    html.Li(id='banner-text', className='nav-item',
-                        children=dcc.Dropdown(['2010', '2011', '2012'], 'NYC', id='demo-dropdown')),
-                    html.Li(id='banner-text', className='nav-item',
-                        children=dcc.Dropdown(['Todos', 'Feminino', 'Masculino'], 'NYC',
-                        id='demo-dropdown')),
-                    html.Li(id='banner-text', className='nav-item',
-                        children=dcc.Dropdown(['RS', 'SP', 'RJ'], 'NYC', id='demo-dropdown'))
-                ])
-            )
+            ch.append(self.build_filtro())
         # ch = [self.build_banner()]
 
-        for i in self.build_indicadores():
-            ch.append(html.Br())
-            ch.append(i)
+        ch.append(html.Div(id='indicadores'))
+
         return html.Div(ch)
 
+    def build_filtro(self):
+
+        dados_filtro = self.controlador.dados_filtro()
+
+        ch = html.Div(id="banner",
+            className="banner",
+            children=[
+                html.Li(className='nav-item',style={"width": "200px"},
+                    children=[dcc.Dropdown(dados_filtro['ano'],dados_filtro['ano'][0],id='dropdown_ano',clearable=False),
+                        html.Div(id='filtro_ano')]),
+
+                html.Li(className='nav-item',style={"width": "200px"},
+                    children=[dcc.Dropdown(dados_filtro['sex'],dados_filtro['sex'][0], id='dropdown_sexo',clearable=False),
+                        html.Div(id='filtro_sexo')]),
+
+                html.Li(className='nav-item',style={"width": "200px"},
+                    children=[dcc.Dropdown(dados_filtro['idade'],dados_filtro['idade'][0],id='dropdown_idade',clearable=False),
+                        html.Div(id='filtro_idade')]),
+
+                html.Li(className='nav-item',style={"width": "200px"},
+                    children=[dcc.Dropdown(options=dados_filtro['uf'],value=dados_filtro['uf'][0]['value'], id='dropdown_uf',clearable=False),
+                        html.Div(id='filtro_uf')]),
+
+                html.Button('Filtrar', id='Filtrar', n_clicks=0, style={'border-width': '3px', 'font-size': '14px'}),
+        ])
+
+        return ch
+
+    def gerar_indicadores(self):
+        self.gerar_barra()
+        self.gerar_pizza()
+        self.gerar_mapa()
+
     def build_indicadores(self):
-        lista = [self.gerar_barra()]
+        self.gerar_indicadores()
+
+        lista = [self.graf_barra]
 
         ch = html.Div(
             id="banner",
@@ -158,7 +222,7 @@ class Interface:
                 html.Li(
                     className='nav-item',
                     children=[
-                        self.gerar_pizza()
+                        self.graf_pizza
                     ],
                 ),
                 html.Li(id='espaco-nav',
@@ -168,7 +232,7 @@ class Interface:
                 html.Li(
                     className='nav-item',
                     children=[
-                        self.gerar_mapa()
+                        self.graf_mapa
                     ],
                 ),
             ],
@@ -176,17 +240,22 @@ class Interface:
 
         lista.append(ch)
 
-        return lista
+        div = html.Div(children=lista)
 
-
+        return div
+    
     def gerar_mapa(self):
+        sex_ = self.filtro['sex']
+        ano_ = self.filtro['ano']
+        idade_ = self.filtro['idade']
+        uf_ = self.filtro['uf']
 
-        df = self.controlador.dados_mapa()
+        df = self.controlador.dados_mapa(ano=ano_,sexo=sex_,idade=idade_,uf=uf_)
         counties = self.controlador.dados_geoson()
 
         fig = px.choropleth_mapbox(df, geojson=counties, locations='sigla_uf', color='qtd',
-                                   color_continuous_scale="Viridis",
-                                   range_color=(0, 25000000),
+                                   color_continuous_scale="jet",
+                                   range_color=(df['qtd'].min()-100000, df['qtd'].max()),
                                    mapbox_style="carto-positron",
                                    zoom=2.8, center={"lat": -14.348643, "lon": -54.089816},
                                    opacity=0.5,
@@ -201,10 +270,16 @@ class Interface:
         )
 
         graf = dcc.Graph(figure=fig)
-        return graf
+        self.graf_mapa = graf
 
     def gerar_pizza(self):
-        df = self.controlador.dados_pizza()
+
+        sex_ = self.filtro['sex']
+        ano_ = self.filtro['ano']
+        idade_ = self.filtro['idade']
+        uf_ = self.filtro['uf']
+
+        df = self.controlador.dados_pizza(ano=ano_,sexo=sex_,idade=idade_,uf=uf_)
 
         fig = px.pie(df, values='qtd', names='idade',
                      title='População Brasileira por Grupo de Idade')
@@ -215,13 +290,18 @@ class Interface:
                           height=500,
                           )
         graf = dcc.Graph(figure=fig)
-        return graf
+        self.graf_pizza = graf
 
     def gerar_barra(self):
 
-        df = self.controlador.dados_barra()
+        sex_ = self.filtro['sex']
+        ano_ = self.filtro['ano']
+        idade_ = self.filtro['idade']
+        uf_ = self.filtro['uf']
 
-        fig = px.histogram(df, x="ano", y="qtd", color="sex", barmode="group", histfunc='sum', template="seaborn")
+        df = self.controlador.dados_barra(ano=ano_,sexo=sex_,idade=idade_,uf=uf_)
+
+        fig = px.histogram(df, x="ano", y="qtd", color="sex", barmode="group", histfunc='sum')
         fig.update_layout(
             title='População Brasileira Anual',
             xaxis_tickfont_size=14,
@@ -244,4 +324,4 @@ class Interface:
         )
 
         graf = dcc.Graph(figure=fig)
-        return graf
+        self.graf_barra = graf

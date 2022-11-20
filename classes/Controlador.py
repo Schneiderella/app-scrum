@@ -14,6 +14,9 @@ class Controlador:
         with open('classes/data/id_uf.json', 'r') as f:
             self.id_uf = json.load(f)
 
+        with open('classes/data/geoson_br.json', 'r') as file:
+            self.counties = json.load(file)
+
     def tratar_dados(self):
         data_2 = self.data
 
@@ -95,9 +98,45 @@ class Controlador:
 
         return df
 
-    @staticmethod
-    def dados_geoson():
-        with open('classes/data/geoson_br.json', 'r') as file:
-            counties = json.load(file)
+    def dados_geoson(self):
 
-        return counties
+        return self.counties
+
+    def dados_filtro(self):
+        dados = {
+            'sex': sorted(list(set([x["sexo"] for x in self.data]))),
+            'ano': sorted(list(set([x["ano"] for x in self.data])), reverse=True),
+            'idade': sorted(list(set([x["grupo_idade"] for x in self.data]))),
+            'uf': [
+            ]
+        }
+        dados['sex'].remove('Total')
+        dados['idade'].remove('Total')
+
+        for i in self.data:
+            for j in self.id_uf:
+                if i['id_uf'] == j['id_uf']:
+                    dados['uf'].append({'value': i['id_uf'], 'label': j['sigla_uf']})
+
+        dados['uf'] = self.unique(dados['uf'])
+
+        dados['uf'] = sorted(dados['uf'],key=lambda x: x['label'])
+
+        dados['uf'].insert(0, {'value': 'Total', 'label': 'Total'})
+        dados['sex'].insert(0, 'Total')
+        dados['idade'].insert(0, 'Total')
+
+        return dados
+
+    @staticmethod
+    def unique(list1):
+        # initialize a null list
+        unique_list = []
+
+        # traverse for all elements
+        for x in list1:
+            # check if exists in unique_list or not
+            if x not in unique_list:
+                unique_list.append(x)
+        # print list
+        return unique_list
