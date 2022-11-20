@@ -185,19 +185,23 @@ class Interface:
             className="banner",
             children=[
                 html.Li(className='nav-item',style={"width": "200px"},
-                    children=[dcc.Dropdown(dados_filtro['ano'],dados_filtro['ano'][0],id='dropdown_ano',clearable=False),
+                    children=[html.Div('Ano'),
+                        dcc.Dropdown(dados_filtro['ano'],dados_filtro['ano'][0],id='dropdown_ano',clearable=False),
                         html.Div(id='filtro_ano')]),
 
                 html.Li(className='nav-item',style={"width": "200px"},
-                    children=[dcc.Dropdown(dados_filtro['sex'],dados_filtro['sex'][0], id='dropdown_sexo',clearable=False),
+                    children=[html.Div('Sexo'),
+                        dcc.Dropdown(dados_filtro['sex'],dados_filtro['sex'][0], id='dropdown_sexo',clearable=False),
                         html.Div(id='filtro_sexo')]),
 
                 html.Li(className='nav-item',style={"width": "200px"},
-                    children=[dcc.Dropdown(dados_filtro['idade'],dados_filtro['idade'][0],id='dropdown_idade',clearable=False),
+                    children=[html.Div('Faixa Etária'),
+                        dcc.Dropdown(dados_filtro['idade'],dados_filtro['idade'][0],id='dropdown_idade',clearable=False),
                         html.Div(id='filtro_idade')]),
 
                 html.Li(className='nav-item',style={"width": "200px"},
-                    children=[dcc.Dropdown(options=dados_filtro['uf'],value=dados_filtro['uf'][0]['value'], id='dropdown_uf',clearable=False),
+                    children=[html.Div('Estado'),
+                        dcc.Dropdown(options=dados_filtro['uf'],value=dados_filtro['uf'][0]['value'], id='dropdown_uf',clearable=False),
                         html.Div(id='filtro_uf')]),
 
                 html.Button('Filtrar', id='Filtrar', n_clicks=0, style={'border-width': '3px', 'font-size': '14px'}),
