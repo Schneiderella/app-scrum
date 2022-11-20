@@ -142,24 +142,28 @@ class Interface:
             ])
 
     def build_interface(self):
-        child = [html.Li(
-            id="banner-text",
-            className='nav-item',
-            children=[
-                html.H5("Dashboard Censo"),
-                html.H6("Projeto Engenharia de Software"),
-            ],
-        ), html.Li(id="banner-text",
-                   className='nav-item',
-                   children=[html.H5("Olá " + self.usuario.nome + '! '),
-                             html.H6("Nível de permissao: " + self.usuario.permissao)],
-                   )]
+        child = [
+            html.Li(
+                id="banner-text",
+                className='nav-item',
+                children=[
+                    html.H4("Dashboard Censo"),
+                    html.H6("Projeto Engenharia de Software"),
+                ],
+            ),
+            html.Li(id="banner-text",
+                className='nav-item',
+                children=[html.H5("Olá " + self.usuario.nome + '! '),
+                            html.H6("Nível de permissao: " + self.usuario.permissao)],
+            )
+        ]
 
         if self.usuario.permissao == '1':
             child.append(html.A('planilha',
                                 id='banner-button',
                                 className='nav-item button',
                                 href='https://docs.google.com/spreadsheets/d/1TXji11jIZMtBK_Li41LNf-oij8PWuWSiGMxuW72njig/edit#gid=0',
+                                target='blank',
                                 style={'font-size': '10px', 'border-style': 'solid'}
                                 ))
 
@@ -305,7 +309,13 @@ class Interface:
 
         df = self.controlador.dados_barra(ano=ano_,sexo=sex_,idade=idade_,uf=uf_)
 
-        fig = px.histogram(df, x="ano", y="qtd", color="sex", barmode="group", histfunc='sum')
+        fig = px.histogram(df, x="Ano", y="Qtd",
+                            color="Sexo",
+                            barmode="group",
+                            histfunc='sum',
+                            opacity=0.9,
+                            color_discrete_sequence=["blue","green"],
+                            text_auto=True)
         fig.update_layout(
             title='População Brasileira Anual',
             xaxis_tickfont_size=14,
@@ -319,10 +329,12 @@ class Interface:
                 title='Ano',
                 titlefont_size=16,
                 tickfont_size=14,
+                showgrid=False,
             ),
             plot_bgcolor='#282d3b',
             paper_bgcolor='#282d3b',
             font={'color': '#FFFFFF'},
+            bargroupgap=0.1
             # width = 1200,
             # height = 500
         )

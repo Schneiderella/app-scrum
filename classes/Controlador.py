@@ -60,10 +60,10 @@ class Controlador:
             condicao = lambda x: x['sexo'] in ['Homens','Mulheres'] and x["grupo_idade"] == idade and x["id_uf"] == uf
 
         df = pd.DataFrame({
-            'sex': [x["sexo"] for x in self.data if condicao(x)],
-            'qtd': [int(x["populacao"]) for x in self.data if condicao(x)],
-            'ano': [x["ano"] for x in self.data if condicao(x)],
-            'uf': [x["id_uf"] for x in self.data if condicao(x)],
+            'Sexo': [x["sexo"] for x in self.data if condicao(x)],
+            'Qtd': [int(x["populacao"]) for x in self.data if condicao(x)],
+            'Ano': [x["ano"] for x in self.data if condicao(x)],
+            'Uf': [x["id_uf"] for x in self.data if condicao(x)],
         })
 
         return df
