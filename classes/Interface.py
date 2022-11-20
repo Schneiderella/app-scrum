@@ -208,7 +208,7 @@ class Interface:
                         dcc.Dropdown(options=dados_filtro['uf'],value=dados_filtro['uf'][0]['value'], id='dropdown_uf',clearable=False),
                         html.Div(id='filtro_uf')]),
 
-                html.Button('Filtrar', id='Filtrar', n_clicks=0, style={'border-width': '3px', 'font-size': '14px'}),
+                html.Button('Filtrar', id='Filtrar', n_clicks=0, style={'margin-top':'12px','font-size': '10px', 'border-style': 'solid'}),
         ])
 
         return ch
@@ -226,6 +226,7 @@ class Interface:
         ch = html.Div(
             id="banner",
             className="banner",
+            style={'padding-top':'10px','padding-left':'0px','padding-right':'0px'},
             children=[
                 html.Li(
                     className='nav-item',
@@ -233,10 +234,6 @@ class Interface:
                         self.graf_pizza
                     ],
                 ),
-                html.Li(id='espaco-nav',
-                        className='nav-item',
-                        style={"width": "100px"}
-                        ),
                 html.Li(
                     className='nav-item',
                     children=[
@@ -248,7 +245,7 @@ class Interface:
 
         lista.append(ch)
 
-        div = html.Div(children=lista)
+        div = html.Div(children=lista, style={'padding-top':'10px','padding-left':'20px','padding-right':'20px'})
 
         return div
     
@@ -273,7 +270,7 @@ class Interface:
             plot_bgcolor='#282d3b',
             paper_bgcolor='#282d3b',
             font={'color': '#FFFFFF'},
-            width=600,
+            width=550,
             height=500,
         )
 
@@ -294,7 +291,7 @@ class Interface:
         fig.update_layout(plot_bgcolor='#282d3b',
                           paper_bgcolor='#282d3b',
                           font={'color': '#FFFFFF'},
-                          width=600,
+                          width=500,
                           height=500,
                           )
         graf = dcc.Graph(figure=fig)
