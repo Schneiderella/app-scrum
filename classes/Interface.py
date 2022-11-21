@@ -16,8 +16,9 @@ class Interface:
     # assume you have a "long-form" data frame
     # see https://plotly.com/python/px-arguments/ for more options
         self.indicadores = []
-        self.filtro = {'sex': 'Total','idade': 'Total','ano': '2019','uf': 'Total',}
         self.controlador = Controlador()
+
+        self.filtro = {'sex': 'Total', 'idade': 'Total', 'ano': '2019', 'uf': 'Total', }
 
         self.validated = False
 
@@ -37,6 +38,8 @@ class Interface:
         def update_output(n_clicks, uname, passw):
             li = AcessarUsuario.extract_table()
             self.validated = False
+            self.filtro = {'sex': 'Total', 'idade': 'Total', 'ano': '2019', 'uf': 'Total', }
+
             for i in li:
                 if i['nome'] == uname and i['pword'] == passw:
                     self.validated = True
@@ -177,7 +180,7 @@ class Interface:
             ch.append(self.build_filtro())
         # ch = [self.build_banner()]
 
-        ch.append(html.Div(id='indicadores'))
+        ch.append(html.Div(id='indicadores',children=self.build_indicadores()))
 
         return html.Div(ch)
 
