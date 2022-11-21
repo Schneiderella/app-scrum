@@ -47,16 +47,16 @@ class Interface:
                     self.usuario.set_permissao(i['permissao'])
 
             if uname == '' or uname == None or passw == '' or passw == None:
-                return html.Div(children='', style={'padding-left': '550px', 'padding-top': '10px'})
+                return html.Div(children='> Entre com suas credenciais', style={'padding-left': '400px', 'padding-top': '20px'})
 
             elif self.validated:
-                return html.Div(dcc.Link('Acesso Permitido!', href='/next_page',
-                                        style={'color': '#183d22', 'font-family': 'serif', 'font-weight': 'bold',
-                                                "text-decoration": "none", 'font-size': '20px'}),
-                                        style={'padding-left': '605px', 'padding-top': '40px'})
+                return html.Div(dcc.Link('> Acesso Permitido. Clique aqui para ver o censo', href='/next_page',
+                                        style={'color': 'rgba(10,100,0,100)', 'font-weight': 'bold',
+                                                "text-decoration": "none", 'font-size': '16px'}),
+                                        style={'padding-left': '400px', 'padding-top': '20px'})
             else:
-                return html.Div(children='Usuário ou senha incorreto',
-                                style={'padding-left': '550px', 'padding-top': '40px', 'font-size': '16px'})
+                return html.Div(children='> Usuário ou senha incorreto',
+                                style={'color': 'rgba(90,50,0,100)', 'font-weight': 'bold','padding-left': '400px', 'padding-top': '20px', 'font-size': '16px'})
 
         @self.app.callback(
                 Output('page-content', 'children'),
@@ -139,8 +139,8 @@ class Interface:
                 }),
             ),
             html.Div(
-                html.Button('Entrar', id='verify', n_clicks=0, style={'border-width':'3px','font-size':'14px'}),
-                    style={'margin-left':'45%','padding-top':'30px'}),
+                html.Button('Entrar', id='verify', n_clicks=0, style={'border-width':'1px','font-size':'10px','color':'white'}),
+                    style={'margin-left':'35%','padding-top':'30px'}),
                 html.Div(id='output1')
             ])
 
