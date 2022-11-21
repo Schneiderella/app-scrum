@@ -55,9 +55,12 @@ class Controlador:
     # retorna os dados tratados a serem utilizados no graf de barras
     def dados_barra(self, sexo=['Homens','Mulheres'], idade='Total', ano='2019', uf='Total'):
 
-        condicao = lambda x: x['sexo'] in ['Homens','Mulheres'] and x["grupo_idade"] == idade
+        if sexo == 'Total':
+            sexo = ['Homens', 'Mulheres']
+
+        condicao = lambda x: x['sexo'] in sexo and x["grupo_idade"] == idade
         if uf != 'Total':
-            condicao = lambda x: x['sexo'] in ['Homens','Mulheres'] and x["grupo_idade"] == idade and x["id_uf"] == uf
+            condicao = lambda x: x['sexo'] in sexo and x["grupo_idade"] == idade and x["id_uf"] == uf
 
         df = pd.DataFrame({
             'Sexo': [x["sexo"] for x in self.data if condicao(x)],

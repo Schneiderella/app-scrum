@@ -5,7 +5,7 @@ from dash import html, dcc, dash
 from dash.dependencies import Output,Input,State
 import plotly.express as px
 
-from classes.AcessarUsuario import AcessarUsuario
+from classes.AcessoPlanilha import AcessoPlanilha
 from classes.Controlador import Controlador
 from classes.Usuario import Usuario
 
@@ -36,7 +36,7 @@ class Interface:
             [State('user', 'value'), State('passw', 'value')]
         )
         def update_output(n_clicks, uname, passw):
-            li = AcessarUsuario.extract_table()
+            li = AcessoPlanilha.extract_table()
             self.validated = False
             self.filtro = {'sex': 'Total', 'idade': 'Total', 'ano': '2019', 'uf': 'Total', }
 

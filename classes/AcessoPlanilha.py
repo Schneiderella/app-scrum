@@ -9,7 +9,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 
-class AcessarUsuario:
+class AcessoPlanilha:
 
     @staticmethod
     def extract_table():
