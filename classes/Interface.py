@@ -114,7 +114,7 @@ class Interface:
             Output('indicadores', 'children'),
             Input('Filtrar', 'n_clicks')
         )
-        def update_figure_uf(uf):
+        def update_figure(uf):
             # print(self.filtro)
             return self.build_indicadores()
 
