@@ -122,7 +122,7 @@ class Interface:
         self.run_interface()
 
     def run_interface(self):
-        self.app.run_server(debug=True)
+        self.app.run_server()
 
     def build_login_page(self):
         return html.Div([
@@ -133,7 +133,7 @@ class Interface:
                 }),
             ),
             html.Div(
-                dcc.Input(id="passw", type="text", placeholder="Senha",className="inputbox2",
+                dcc.Input(id="passw", type="password", placeholder="Senha",className="inputbox2",
                     style={'margin-left':'35%','width':'450px','height':'45px','padding':'10px','margin-top':'10px',
                     'font-size':'16px','border-width':'3px','border-color':'#a0a3a2',
                 }),
@@ -273,7 +273,7 @@ class Interface:
             plot_bgcolor='#282d3b',
             paper_bgcolor='#282d3b',
             font={'color': '#FFFFFF'},
-            width=550,
+            width=650,
             height=500,
         )
 
@@ -294,7 +294,7 @@ class Interface:
         fig.update_layout(plot_bgcolor='#282d3b',
                           paper_bgcolor='#282d3b',
                           font={'color': '#FFFFFF'},
-                          width=500,
+                          width=650,
                           height=500,
                           )
         graf = dcc.Graph(figure=fig)
